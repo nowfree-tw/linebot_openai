@@ -54,16 +54,18 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = event.message.text
+    msg = event.message.text.lower()  # 将输入文本转换为小写，以便不区分大小写处理
     try:
-        GPT_answer = "OKOK"
-        print(GPT_answer)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
-    except:
-        print(traceback.format_exc())
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
-    if msg == "flex":
-        sendflex()
+        if msg == "flex":
+            sendFlex(event)  # 注意这里改为正确的函数名称，并传入 event
+        else:
+            GPT_answer = "OKOK"  # 假设这里是处理其他消息的默认回应
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=GPT_answer))
+    except Exception as e:
+        print(traceback.format_exc())  # 输出错误堆栈
+        error_message = '你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=error_message))
+
 def sendFlex(event):  # 彈性配置
     try:
         bubble = BubbleContainer(
