@@ -73,7 +73,7 @@ def handle_message(event):
         elif msg == "家人死亡後，悲傷情緒難以平復":
             premsg="復原是條漫長的路..."
             sendFlex4(event,premsg)
-            pass
+            
         elif msg == "感到日漸衰老，想開始安排安寧的晚年":
             premsg="生死是人生需要面對的最後一關，預作準備才能從容面對。你可能需要先思考下列問題。"
             sendFlex2(event,premsg)  # 注意这里改为正确的函数名称，并传入 event
