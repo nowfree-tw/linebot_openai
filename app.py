@@ -71,15 +71,13 @@ def handle_message(event):
         elif msg == "到了生命末期，想在家安祥度過生命的最後階段":
             sendFlex3(event)  # 注意这里改为正确的函数名称，并传入 event
         elif msg == "家人死亡後，悲傷情緒難以平復":
-            #sendFlex4(event)  # 注意这里改为正确的函数名称，并传入 event
+            premsg="復原是條漫長的路..."
+            sendFlex4(event,premsg)
             pass
         elif msg == "感到日漸衰老，想開始安排安寧的晚年":
             premsg="生死是人生需要面對的最後一關，預作準備才能從容面對。你可能需要先思考下列問題。"
             sendFlex2(event,premsg)  # 注意这里改为正确的函数名称，并传入 event
-#
-#            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=premsg))
- #           sendFlex3(event)  # 注意这里改为正确的函数名称，并传入 event
-            #sendFlex2(event)  # 注意这里改为正确的函数名称，并传入 event
+
             pass
         else:
             GPT_answer = "你提到了:"+msg  # 假设这里是处理其他消息的默认回应
@@ -762,6 +760,144 @@ def sendFlex2(event,*args):  #彈性配置
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤！'))
 
 
+def sendFlex4(event,*args):  #彈性配置
+    try:
+        trycontent={
+  "type": "carousel",
+  "contents": [
+    {
+      "type": "bubble",
+      "size": "giga",
+      "hero": {
+        "type": "image",
+        "url": "https://i.imgur.com/lrX4o5f.jpeg",
+        "size": "full",
+        "aspectMode": "cover",
+        "aspectRatio": "320:213"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "什麼是悲傷輔導?",
+            "weight": "bold",
+            "size": "xl",
+            "wrap": true,
+            "align": "center"
+          },
+          {
+            "type": "filler"
+          }
+        ],
+        "spacing": "sm",
+        "paddingAll": "13px"
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "悲傷治療",
+            "align": "end"
+          }
+        ]
+      }
+    },
+    {
+      "type": "bubble",
+      "size": "giga",
+      "hero": {
+        "type": "image",
+        "size": "full",
+        "aspectMode": "cover",
+        "aspectRatio": "320:213",
+        "url": "https://i.imgur.com/HNHlvlw.jpeg"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "如何尋找悲傷輔導?",
+            "weight": "bold",
+            "size": "xl",
+            "wrap": true,
+            "align": "center"
+          }
+        ],
+        "spacing": "sm",
+        "paddingAll": "13px"
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "悲傷治療",
+            "align": "end"
+          }
+        ]
+      }
+    },
+    {
+      "type": "bubble",
+      "size": "giga",
+      "hero": {
+        "type": "image",
+        "url": "https://i.imgur.com/JGeEnuZ.jpeg",
+        "size": "full",
+        "aspectMode": "cover",
+        "aspectRatio": "320:213"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "藝術治療與音樂治療\n如何降低悲傷情緒?",
+            "weight": "bold",
+            "size": "xl",
+            "wrap": true,
+            "align": "center"
+          }
+        ],
+        "spacing": "sm",
+        "paddingAll": "13px"
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "悲傷治療",
+            "align": "end"
+          }
+        ]
+      }
+    }
+  ]
+}
+        flex_message = FlexSendMessage(alt_text="悲傷治療", contents=trycontent)
+        
+        # 需要準備發送的消息列表
+        messages = list()    # 將 args 轉換成列表  #修改處
+        for i in args:
+            messages.append(TextSendMessage(text=i))
+        messages.append(flex_message)  # 將 Flex Message 添加到列表中  #修改處
+
+        # 使用 reply_message 發送一個消息列表
+        line_bot_api.reply_message(event.reply_token, messages)  #修改處
+
+    except Exception as e:
+        print("error:", e)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤！'))
 
 @handler.add(PostbackEvent)
 def handle_message(event):
