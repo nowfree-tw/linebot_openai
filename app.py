@@ -554,7 +554,7 @@ def sendFlex2(event,*args):  #彈性配置
       "size": "giga",
       "hero": {
         "type": "image",
-        "url": "https://i.imgur.com/EqQFaC9.jpeg",
+        "url": "https://i.imgur.com/Yyck3Vh.jpeg",
         "size": "full",
         "aspectMode": "cover",
         "aspectRatio": "320:213"
