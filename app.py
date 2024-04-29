@@ -1191,16 +1191,6 @@ def handle_postback_event(event):
         pack=[msg1,msg3,msg5]      
         message=MessagesPacker(pack)
         line_bot_api.reply_message(event.reply_token, message)    
-    elif event.postback.data=="postback2.5":
-          msg1=["text","居家照顧服務除了可向政府申請公費補助之外，還有坊間自費的短期看護、陪伴照護或家事服務等選擇。"]
-          msg2=["text","自費的居家照顧可以透過仲介、網路平台來尋找看護。相較長照2.0，自費的居服流程較為簡單，只需向服務單位提出"]
-          msg3=["text","需求派案，談妥價格、服務項目、服務時間等條件後，再由照服員到府服務。"]
-          msg4=["text","服務單位:清安照顧服務勞動合作社 0979513281 (8am~10PM可接電話 王專員)"]
-          msg5=["flex","自費服務",Flex2Message]
-          pack=[msg1,msg2,msg3,msg4,msg5]      
-          message=MessagesPacker(pack)
-          line_bot_api.reply_message(event.reply_token, message)   
-
     elif event.postback.data=="postback2.4":
         msg1=["text","目前新竹市居家安寧服務由以下醫療機構附設之居家護理所所提供。\n可以經由醫護人員轉介安寧居家護理師，或聯繫24小時居家安寧諮詢電話專線申請:"]
         msg2=["text","1.國立臺灣大學醫學院附設醫院新竹臺大分院\n電話: 0972-654296"]
@@ -1209,35 +1199,95 @@ def handle_postback_event(event):
         msg5=["flex","長照機構",Flex2Message]
         pack=[msg1,msg2,msg3,msg4,msg5]      
         message=MessagesPacker(pack)
-        line_bot_api.reply_message(event.reply_token, message)   
+        line_bot_api.reply_message(event.reply_token, message)       
+    elif event.postback.data=="postback2.5":
+      msg1=["text","居家照顧服務除了可向政府申請公費補助之外，還有坊間自費的短期看護、陪伴照護或家事服務等選擇。"]
+      msg2=["text","自費的居家照顧可以透過仲介、網路平台來尋找看護。相較長照2.0，自費的居服流程較為簡單，只需向服務單位提出"]
+      msg3=["text","需求派案，談妥價格、服務項目、服務時間等條件後，再由照服員到府服務。"]
+      msg4=["text","服務單位:清安照顧服務勞動合作社 0979513281 (8am~10PM可接電話 王專員)"]
+      msg5=["flex","自費服務",Flex2Message]
+      pack=[msg1,msg2,msg3,msg4,msg5]      
+      message=MessagesPacker(pack)
+      line_bot_api.reply_message(event.reply_token, message)   
 
     elif event.postback.data=="postback3.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    elif event.postback.data=="postback2.1":
-        pass
-    
+      #3-1 安寧長照有何不同
+      msg1=["text","安寧緩和醫療提供罹患無法治癒疾病的病人，疼痛及其他症狀的緩解，提升病人生活品質\n社區安寧：結合住家附近的醫院、診所醫師、居家護理人員、社工\n提供跨單位之照護，讓末期病人有尊嚴的善終"]
+      msg2=["text","長照服務：對身體功能或心智功能部分或全部喪失，持續已達或預期達六個月以上者，依其個人或其照顧者之需要，所提供之生活支持、協助、社會參與、照顧及相關的醫護服務。"]
+      msg4=["text","長照服務提供單位如：\n如:清安居家長照機構(居家照顧)03-5165990\n子馨居家長照機構(居家照顧、專業復能)03-5730603\n順順居家護理所(專業復能)03-5724588"]    
+      msg3=["text","居家安寧和長期照護皆是照顧病人生理及心理的需求，治療場所皆位於家中依個案需求，社區居家安寧與長照服務兩者均可申請"]
+      #msg4=["text","服務單位:清安照顧服務勞動合作社 0979513281 (8am~10PM可接電話 王專員)"]
+      msg5=["flex","安寧與長照",Flex3Message]
+      pack=[msg1,msg2,msg4,msg3,msg5]      
+      message=MessagesPacker(pack)
+      line_bot_api.reply_message(event.reply_token, message)   
+
+    elif event.postback.data=="postback3.2":
+      #3-2 哪些單位可以提通社區居家安寧服務
+      msg1=["text","新竹:\n北區：新竹台大附設居護所\n東區：南門醫院、新竹馬偕居家護理所、南門綜合醫院附設居護所、啟恩小兒科診所、國泰新竹居家護理所"]
+      msg2=["text","竹北:\n竹北市：東元醫院、美安居家護理所\n湖口鄉：新竹仁慈居家護理所"]
+      msg3=["text","竹東五峰鄉：新竹縣五峰鄉居家護理所\n竹東鎮：北榮新竹分院、台大竹東分院附設居護所"]
+#      msg4=["image","https://imgur.com/v3WbseR.png"]
+      msg5=["flex","安寧與長照服務單位",Flex3Message]
+      pack=[msg1,msg2,msg3,msg5]      
+      message=MessagesPacker(pack)
+      line_bot_api.reply_message(event.reply_token, message)   
+  
+    elif event.postback.data=="postback3.3":
+      #3-3 社區居家安寧服務APPLY
+      msg1=["text","一般民眾：\n在健保署網站「安寧療護（住院、居家、共照）網路查詢服務」下載「預立安寧緩和醫療暨維生醫療抉擇意願書」，填妥後郵寄至衛福部或台灣安寧照護協會，可將安寧醫療意願註記於健保卡上"]
+      msg2=["text","病患和家屬：可至健保署網站查詢各鄉鎮提供安寧療護之院所及24小時諮詢專線，經由各療護院所進行評估"]
+       #msg4=["image","https://imgur.com/v3WbseR.png"]
+      msg5=["flex","申請社區居家安寧服務",Flex3Message]
+      pack=[msg1,msg2,msg5]      
+      message=MessagesPacker(pack)
+      line_bot_api.reply_message(event.reply_token, message)   
+
+    elif event.postback.data=="postback3.4":
+      #哪些狀況可以在家住院，並獲得必需的醫療服務
+      msg1=["text","申請在宅醫療的條件為：限居住於住家（不含照護機構）、因失能或疾病特性導致外出就醫不便，且經照護團隊評估有明確醫療需求:\n失能條件為：巴氏量表小於60分\n疾病特性導致外出就醫不便所指為疾病不影響運動功能，但外出就醫有困難者，如：重度以上失智症"]
+      msg2=["text","在宅住院由專業醫師、護理人員、藥師、其他專業人員訪視\n提供的服務包含：在家抽血檢驗、點滴注射、抗生素藥物治療、傷口照護與指導和臨終照護\n在宅住院能提升病人及家屬的治療品質和生活品質"]
+      msg3=["text","進入衛生福利部中央健康保險署網站，點選「居家醫療整合照護特約醫事機構查詢」，依據居家服務種類/居家醫療照護整合、所在地區(新竹市東區)，查詢機構\n與居家醫療照護團隊進行聯絡，新竹國泰電話:03-5962998轉分機300或0983702698\n由機構進行評估後，進行居家照護服務"]
+      msg5=["flex","在宅醫療",Flex3Message]
+      pack=[msg1,msg2,msg3,msg5]      
+      message=MessagesPacker(pack)
+      line_bot_api.reply_message(event.reply_token, message)
+    elif event.postback.data=="postback3.5":
+        msg1=["image","https://i.imgur.com/VhNT35x.png"]
+        msg5=["flex","靈性需求",Flex3Message]
+        pack=[msg1,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+        
+    elif event.postback.data=="postback3.6":
+        msg1=["image","https://i.imgur.com/gT6vLl8.png"]
+        msg5=["flex","面對死亡",Flex3Message]
+        pack=[msg1,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+    elif event.postback.data=="postback4.1":
+        msg1=["text","當我們身邊有親人生病了，心情難免會有起伏，我們可以體察自己的情緒狀態，需要時可以向親朋好友傾訴，並且在適當時宣洩自己的情緒，因此即使哭泣也是自然的。保持一定的休閒活動，讓自己放鬆，或找時間靜下來思考一下自己的生活，找出自己對生命的詮釋，皆是照顧情緒的方式。萬一發現自己，陷入情緒低潮而無法自拔，或有任何不能理解的狀態時，則可尋求專業人員協談。「悲傷輔導」是會由支持團體、醫院社工、靈性團體、心理師，來幫助家屬平順地度過悲傷期，面對生命重拾自己。"]
+        msg5=["flex","悲傷輔導",Flex4Message]
+        pack=[msg1,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+
+    elif event.postback.data=="postback4.2":
+        msg1=["image","https://i.imgur.com/c6XQ5v2.png"]
+        msg2=["image","https://i.imgur.com/d4mdFvy.png"]
+        msg5=["flex","悲傷輔導路徑",Flex4Message]
+        pack=[msg1,msg2,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+    elif event.postback.data=="postback4.3":
+        msg1=["text","藝術治療是一種結合創造性藝術表達和心理治療的助人專業。藝術治療提供一種非語言的溝通方式、安全不具威脅性的表達空間，以協助個案自我表現、自我溝通和自 我成長的機會。"]
+        msg2=["text","藝術治療師及當事人藉由作品看故事、說故事，可以 有效降低當事人在面對失落悲傷的防衛心理，或是不知從何談起的困境。由藝術創作所建立之安全信任的過渡空間，讓當事人在其中藉由媒材表達出內在隱而未顯的失落、悲傷。"]
+        msg3=["text","音樂治療是個專業的醫療相關職業，其中音樂被使用於治療關係中，以解決個案的生理、情緒、認知及社交需求。在評估每位個案後，合格的音樂治療師會提供需要的治療，包含創作、歌唱、律動及聆聽音樂。透過治療情境中的音樂互動，個案的能力被強化及轉移至生活中的其他面向。此外，音樂治療可以幫助不便運用口語表達的人，來有效的表達自己。許多科學研究亦證實音樂治療的療效，例如：音樂治療可以促進肢體運用達到全身性的復健、提高人們參與治療的動力、支持個案及其家人的情緒、及提供情緒表達的途徑。"]
+        msg4=["text","藝術治療範例可點選此連結  : https://youtu.be/MtLp6RIxXSw"]
+        msg5=["flex","藝術與音樂治療",Flex4Message]
+        pack=[msg1,msg2,msg3,msg4,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
 
 
 @handler.add(MemberJoinedEvent)
