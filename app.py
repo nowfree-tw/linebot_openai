@@ -61,13 +61,17 @@ def MessagesPacker(pack):
             messages.append(FlexSendMessage(alt_text=item[1], contents=item[2]))  # 如果是字典，打包为 Flex Message
         elif item[0]=="image" and item[1].startswith("http"):
             messages.append(ImageSendMessage(original_content_url=item[1], preview_image_url=item[1]))  # 如果是以"http"开头的字符串，打包为图片消息
+        elif item[0]=="url" and item[1].startswith("http"):
+            messages.append(TextSendMessage(text="請參考下列網址: "+'{}'.format(item[1])))  # 如果是字符串，打包为文字消息
         else:
             raise ValueError("打包函數不包括此類型")  # 如果是其他类型，引发错误
+        
+            
     return messages  # 返回消息列表
 
 
 ##FlexMessageData
-Flex1Message={ 
+Flex1Message={
   "type": "carousel",
   "contents": [
     {
@@ -94,10 +98,23 @@ Flex1Message={
           },
           {
             "type": "filler"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "label": "我有需要",
+              "data": "postback1.1"
+            },
+            "style": "primary"
           }
         ],
         "spacing": "sm",
-        "paddingAll": "13px"
+        "paddingAll": "13px",
+        "action": {
+          "type": "postback",
+          "data": "postback1.1"
+        }
       },
       "footer": {
         "type": "box",
@@ -127,15 +144,38 @@ Flex1Message={
         "contents": [
           {
             "type": "text",
-            "text": "\n如何取得死亡證明書",
+            "text": "如何取得死亡證明書",
             "weight": "bold",
             "size": "xl",
             "wrap": true,
-            "align": "center"
+            "align": "center",
+            "position": "relative",
+            "action": {
+              "type": "postback",
+              "label": "action",
+              "data": "postback1.2"
+            }
+          },
+          {
+            "type": "filler"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "label": "取得管道",
+              "data": "postback1.2"
+            },
+            "style": "primary"
           }
         ],
         "spacing": "sm",
-        "paddingAll": "13px"
+        "paddingAll": "13px",
+        "action": {
+          "type": "postback",
+          "label": "取得管道",
+          "data": "postback1.2"
+        }
       },
       "footer": {
         "type": "box",
@@ -170,10 +210,24 @@ Flex1Message={
             "size": "xl",
             "wrap": true,
             "align": "center"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "label": "取得資訊",
+              "data": "postback1.3"
+            },
+            "style": "primary"
           }
         ],
         "spacing": "sm",
-        "paddingAll": "13px"
+        "paddingAll": "13px",
+        "action": {
+          "type": "postback",
+          "label": "action",
+          "data": "postback1.3"
+        }
       },
       "footer": {
         "type": "box",
@@ -207,7 +261,21 @@ Flex1Message={
             "weight": "bold",
             "size": "xl",
             "wrap": true,
-            "align": "center"
+            "align": "center",
+            "action": {
+              "type": "postback",
+              "label": "取得資訊",
+              "data": "postback1.4"
+            }
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "label": "取得資訊",
+              "data": "postback1.4"
+            },
+            "style": "primary"
           }
         ],
         "spacing": "sm",
@@ -246,10 +314,24 @@ Flex1Message={
             "size": "xl",
             "wrap": true,
             "align": "center"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "label": "我有需要",
+              "data": "postback1.5"
+            },
+            "style": "primary"
           }
         ],
         "spacing": "sm",
-        "paddingAll": "13px"
+        "paddingAll": "13px",
+        "action": {
+          "type": "postback",
+          "label": "action",
+          "data": "postback1.5"
+        }
       },
       "footer": {
         "type": "box",
@@ -1160,14 +1242,56 @@ def sendFlex4(event,*args):  #彈性配置
 def handle_postback_event(event):
     print (event.postback.data)
     if event.postback.data=="postback1.1":
-        pass
-        ##        pack=[]
-##        msg1=["text","wahaha"]
-##        msg2=["image","https://i.imgur.com/F3ftAED.jpg"]
-##        msg3=["flex","預立醫囑",Flex1Message]
-##        pack=[msg1,msg2,msg3]
-##        message=MessagesPacker(pack)
-##        line_bot_api.reply_message(event.reply_token, message)
+        msg1=["text","要讓病人順利運送到自宅房間，需考慮病人身體情況決定交通運輸工具：\n若病人能完成基本移動或使用輪椅，可考慮使用私人車輛，計程車，或復康巴士。"]
+        msg2=["text","對行動不便或臥床病人，返家需以民間救護車運送。\n收費依照民間救護車標準計算：\n市區範圍一趟費用約 1500-2000元(包括車輛費用，技術員費用及衛材費用)，有需要亦可安排專業護理師跟車(600元/時)。\n詳細費用可連絡國泰醫院特約紅俥救護車公司估算。\n紅俥救護車公司電話號碼： (03)596-6666"]
+        msg3=["text","你的問題回答如上。如果你還有其他問題，可以在下面的圖卡選擇情況或從主選單內挑選其它情境，以獲得需要的資訊。"]
+        msg5=["flex","返家運送",Flex1Message]
+        pack=[msg1,msg2,msg3,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+
+    elif event.postback.data=="postback1.2":
+        msg1=["text","須備妥亡者身分證、家屬身分證及印章辦理。\n若在醫院過世：由醫院醫師開立死亡證明。 \n在家亡故：通知衛生所醫師開立死亡證明。\n東區衛生所：\n03-5236158\n北區衛生所：\n03-5353969\n香山區衛生所：\n03-5388109\n意外死亡：至派出所報案請檢察官開相驗證明。\n若已有合作禮儀公司，可詢問是否有醫師協助開立。"]
+        #msg2=["text","你可以決定：\n當你處於疾病末期或昏迷等嚴重狀況時，是否接受維持生命的治療。\n及是否要接受人工管灌餵食。"]
+        msg3=["text","你的問題回答如上。如果你還有其他問題，可以在下面的圖卡選擇情況或從主選單內挑選其它情境，以獲得需要的資訊。"]
+        msg4=["text","所需死診份數依情況而定，通常一份為10張，需使用死亡證明書情況 ：\n1.終止存款戶頭。\n.2終止保險及申請保險給付。\n3.申請除戶戶籍謄本。\n4.地政事務所辦理不動產產權變更。\n5.申請殯儀館。\n6.國稅局理遺產變更。\n7.申請火（埋）葬許可。\n8.申請納骨塔（公墓）。\n9.另需準備多份訃聞及死亡證明書，供家屬向工作單位請假用。"]
+        msg2=["url","https://dep-n-health.hccg.gov.tw/ch/home.jsp?id=10041&parentpath=0,20&mcustomize=multimessages_view.jsp&toolsflag=Y&dataserno=201606060006&t=SalesPhoto&mserno=201606040001"]
+        msg5=["flex","死亡證明",Flex1Message]
+        pack=[msg1,msg4,msg2,msg3,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+    elif event.postback.data=="postback1.3":
+        msg1=["text","接受或拒絕維持生命治療：\n你可以決定：\n當你處於疾病末期或昏迷等嚴重狀況時，是否接受維持生命的治療。\n及是否要接受人工管灌餵食。"]
+        #msg2=["text","你可以決定：\n當你處於疾病末期或昏迷等嚴重狀況時，是否接受維持生命的治療。\n及是否要接受人工管灌餵食。"]
+        msg3=["text","你的問題回答如上。如果你還有其他問題，可以在下面的圖卡選擇情況或從主選單內挑選其它情境，以獲得需要的資訊。"]
+        msg4=["image","https://imgur.com/xsNh2T4.png"]
+        msg2=["image","https://imgur.com/ogDjZ7Q.png"]
+        msg5=["flex","管路移除",Flex1Message]
+        pack=[msg2,msg4,msg3,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+    elif event.postback.data=="postback1.4":
+        #msg1=["text","接受或拒絕維持生命治療：\n你可以決定：\n當你處於疾病末期或昏迷等嚴重狀況時，是否接受維持生命的治療。\n及是否要接受人工管灌餵食。"]
+        #msg2=["text","你可以決定：\n當你處於疾病末期或昏迷等嚴重狀況時，是否接受維持生命的治療。\n及是否要接受人工管灌餵食。"]
+        msg3=["text","參考以下清潔大體衛教影片：\n https://youtu.be/6mMTbiG_2KE?si=PW2kRKLOJnh_gkLH&t=2320"]
+        msg1=["text","1.清潔：\n(1)使用溫熱毛巾擦拭身體。因為聽覺是最後消失的，所以我們可以一邊擦拭一邊告訴他正在做什麼，或可向其述說『沒有病痛了，安心離去吧！』，猶如往生者在世一般。\n(2)清潔後為預防大小便失禁而污染遺體，故需穿上尿布。如果患者生前即排斥使用，我們可以換個方式告訴他現在為他穿上褲子，並於入殮時可將尿布移除。\n(3)為避免因擦拭遺體時的翻動，造成胃內穢物流出，於清潔時可以在頭、肩膀下墊一塊大毛巾以利擦拭及避免穢物弄髒衣物。\n\n2.更衣：因人體死亡後肌肉會鬆弛造成大小便的滲出或胃內穢物流出，死亡6-8小時後遺體會開始漸漸僵硬，應盡快更衣。"]
+        msg2=["text","3.闔眼：\n若病人此時眼睛未全閉時，可於耳旁訴說一些讓其安心的話，並用指尖在眼皮上向下輕壓一下，即可使雙眼自然閉合，或使用紙膠帶將眼皮稍微往下黏貼，6-8小時後再移除。\n\n4.闔嘴：\n(1)如往生者有使用假牙，可將其置回口中，以求相貌完整。\n(2)如有張口情形可於頭下置一枕頭，然後將毛巾捲成軸狀，放於下巴處，並將下巴往上推使嘴巴合攏，也可使用毛巾和布條托住下巴。以上兩種方法均須於6-8小時後移除毛巾或布條。\n\n5.其他：\n(1)若有水腫破皮現象，應使用尿布墊或毛巾，將水腫部位包起來，預防滲出液體。\n(2)必要時可著上淡妝，使其相貌看起來較柔順，就如同其在世一般。"]
+        msg4=["text","你的問題回答如上。如果你還有其他問題，可以在下面的圖卡選擇情況或從主選單內挑選其它情境，以獲得需要的資訊。"]
+        msg5=["flex","大體清潔",Flex1Message]
+        pack=[msg1,msg2,msg3,msg4,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+    elif event.postback.data=="postback1.5":
+        msg1=["text","若已有安寧居家團隊收案，可先聯絡安寧團隊協助。\n若無安寧居家團隊收案，可聯絡廠商。\nA.店名：長騰醫療儀器行\n 聯絡電話：035332888\n地址：新竹市東區經國路一段452之10號\n B.店名：康諾健康生活館\n 聯絡電話：035358250\n地址：300新竹市東區鐵道路二段5號\n"]
+        #msg2=["text","你可以決定：\n當你處於疾病末期或昏迷等嚴重狀況時，是否接受維持生命的治療。\n及是否要接受人工管灌餵食。"]
+        msg4=["text","你的問題回答如上。如果你還有其他問題，可以在下面的圖卡選擇情況或從主選單內挑選其它情境，以獲得需要的資訊。"]
+#        msg4=["image","https://i.imgur.com/aq3Y7xJ.jpeg"]
+        msg2=["text","新竹市輔具及居家無障礙環境改善服務特約廠商名單，請連結以下網址，下載附件：\nhttps://www.hcchb.gov.tw/service_a.php?service_id=6"]
+        msg5=["flex","氧氣租借",Flex1Message]
+        pack=[msg1,msg2,msg4,msg5]      
+        message=MessagesPacker(pack)
+        line_bot_api.reply_message(event.reply_token, message)
+                
 
     elif event.postback.data=="postback2.1":
         msg1=["text","接受或拒絕維持生命治療：\n你可以決定：\n當你處於疾病末期或昏迷等嚴重狀況時，是否接受維持生命的治療。\n及是否要接受人工管灌餵食。"]
@@ -1317,11 +1441,6 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore", category=LineBotSdkDeprecatedIn30)
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-    
-    
-    
-
-
     
     
     
