@@ -1190,6 +1190,13 @@ def handle_message(event):
             print("I am here")
             GPT_answer = askotherquestion(msg)[0]  # 假设这里是处理其他消息的默认回应,只取第一個問題。
             print("Confidence:",GPT_answer["confidenceScore"])
+#            source=GPT_answer["source"]
+
+            try:
+                source=GPT_answer["source"]
+            except:
+                pass
+#            print (source)
             if GPT_answer["confidenceScore"] >= 0.3 and "dialog" in GPT_answer.keys():
                 print ("prompts:",len(GPT_answer["dialog"]["prompts"]),"answers:",len(GPT_answer["answer"]))
                 if len(GPT_answer["dialog"]["prompts"]) >0 and len(GPT_answer["answer"]) >0:
@@ -1201,14 +1208,20 @@ def handle_message(event):
                     print ("length:@@",len(promptlist))
                     if len(promptlist) >= 3:
                         promptlist=promptlist[0:3]
-
-                    msg1 = TextSendMessage(text=GPT_answer["answer"])
+                    try:
+                        msg1 = TextSendMessage(text=GPT_answer["answer"]+"\n資料來源：\n"+source)
+                    except:
+                        msg1 = TextSendMessage(text=GPT_answer["answer"])
+                        
                     msg2 = ButtonMsg(promptlist) 
                     line_bot_api.reply_message(event.reply_token, [msg1,msg2])
 
                 elif len(GPT_answer["dialog"]["prompts"]) ==0 and len(GPT_answer["answer"]) >0:
                     print("checkpoint 2")
-                    msg1 = TextSendMessage(text=GPT_answer["answer"])                    # 將下面這行改為使用 msg2
+                    try:
+                        msg1 = TextSendMessage(text=GPT_answer["answer"]+"\n資料來源：\n"+source)
+                    except:
+                        msg1 = TextSendMessage(text=GPT_answer["answer"])
                     line_bot_api.reply_message(event.reply_token, msg1)
                 elif len(GPT_answer["dialog"]["prompts"]) > 0 and len(GPT_answer["answer"]) ==0: 
                     print("checkpoint 3")
