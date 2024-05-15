@@ -1189,7 +1189,7 @@ def handle_message(event):
             GPT_answer = askotherquestion(msg)  # 假设这里是处理其他消息的默认回应
             print (GPT_answer)
             print (GPT_answer[0]["confidenceScore"])
-            if GPT_answer[0]["confidenceScore"] >=0.3:
+            if GPT_answer[0]["confidenceScore"] >=0.8:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=GPT_answer[0]["answer"]))
     except Exception as e:
         print("error:",e)  # 输出错误堆栈
