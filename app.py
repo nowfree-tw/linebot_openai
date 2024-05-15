@@ -15,7 +15,7 @@ from linebot.exceptions import (
 from linebot.models import *
 from linebot.models import TextSendMessage, FlexSendMessage, ImageSendMessage
 import os
-
+import requests
 import warnings
 from linebot import LineBotSdkDeprecatedIn30
 
@@ -38,8 +38,32 @@ handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 # OPENAI API Key初始化設定
 openai.api_key = os.getenv('OPENAI_API_KEY')
 true=True
+Azureurl = os.getenv("Azureurl")
+Azuresubscription_key = os.getenv("Azuresubscription_key")
 
-
+def askotherquestion(question):
+    
+    headers = {
+        "Ocp-Apim-Subscription-Key": Azuresubscription_key,
+        "Content-Type": "application/json"
+    }
+    
+    data = {
+        "top": 3,
+        "question": question,
+        "includeUnstructuredSources": True
+    }
+    
+    response = requests.post(Azureurl, headers=headers, json=data)
+    
+    if response.status_code == 200:
+ #       print("請求成功！")
+ #       print(response.json())  # 印出回應的內容
+        return response.json()["answers"]
+    else:
+  #      print("請求失敗...")
+#        print(response.text)  # 印出錯誤訊息
+        return False
 
 
 
@@ -1161,11 +1185,15 @@ def handle_message(event):
 
             pass
         else:
-            GPT_answer = "你提到了:"+msg  # 假设这里是处理其他消息的默认回应
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=GPT_answer))
+            print ("I am here")
+            GPT_answer = askotherquestion(msg)  # 假设这里是处理其他消息的默认回应
+            print (GPT_answer)
+            print (GPT_answer[0]["confidenceScore"])
+            if GPT_answer[0]["confidenceScore"] >=0.3:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=GPT_answer[0]["answer"]))
     except Exception as e:
         print("error:",e)  # 输出错误堆栈
-        error_message = '你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'
+        error_message = '不好意思，有點小錯誤。'
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=error_message))
 
 
