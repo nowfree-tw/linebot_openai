@@ -41,7 +41,6 @@ true=True
 Azureurl = os.getenv("Azureurl")
 Azuresubscription_key = os.getenv("Azuresubscription_key")
 
-
 def askotherquestion(question):
     
     headers = {
@@ -1189,8 +1188,8 @@ def handle_message(event):
         else:
             print("I am here")
             GPT_answer = askotherquestion(msg)[0]  # 假设这里是处理其他消息的默认回应,只取第一個問題。
-            print(GPT_answer["confidenceScore"])
-            if GPT_answer["confidenceScore"] >= 0.3 and dialog in gptanswer.keys():
+            print("Confidence:",GPT_answer["confidenceScore"])
+            if GPT_answer["confidenceScore"] >= 0.3 and "dialog" in GPT_answer.keys():
                 print ("prompts:",len(GPT_answer["dialog"]["prompts"]),"answers:",len(GPT_answer["answer"]))
                 if len(GPT_answer["dialog"]["prompts"]) >0 and len(GPT_answer["answer"]) >0:
                     print("checkpoint 1")
