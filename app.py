@@ -41,6 +41,7 @@ true=True
 Azureurl = os.getenv("Azureurl")
 Azuresubscription_key = os.getenv("Azuresubscription_key")
 
+
 def askotherquestion(question):
     
     headers = {
