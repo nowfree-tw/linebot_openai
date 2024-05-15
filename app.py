@@ -41,6 +41,7 @@ true=True
 Azureurl = os.getenv("Azureurl")
 Azuresubscription_key = os.getenv("Azuresubscription_key")
 
+
 def askotherquestion(question):
     
     headers = {
@@ -1189,8 +1190,8 @@ def handle_message(event):
             print("I am here")
             GPT_answer = askotherquestion(msg)[0]  # 假设这里是处理其他消息的默认回应,只取第一個問題。
             print(GPT_answer["confidenceScore"])
-            print ("prompts:",len(GPT_answer["dialog"]["prompts"]),"answers:",len(GPT_answer["answer"]))
-            if GPT_answer["confidenceScore"] >= 0.3:
+            if GPT_answer["confidenceScore"] >= 0.3 and dialog in gptanswer.keys():
+                print ("prompts:",len(GPT_answer["dialog"]["prompts"]),"answers:",len(GPT_answer["answer"]))
                 if len(GPT_answer["dialog"]["prompts"]) >0 and len(GPT_answer["answer"]) >0:
                     print("checkpoint 1")
                     promptlist = list()
@@ -1225,9 +1226,16 @@ def handle_message(event):
                 else:
                     print("checkpoint 3")
 
-                    print("I am here ###", nothing)
+                    print("I am here ###", "nothing")
 
                     line_bot_api.reply_message(event.reply_token, TextSendMessage(text="無內容"))
+            else:
+                    print("checkpoint 3")
+
+                    print("I am here ###", "nothing")
+
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="找不到你所需要的內容"))
+
     except Exception as e:
         print("error:", e)  # 输出错误堆栈
         error_message = '不好意思，有點小錯誤。'
