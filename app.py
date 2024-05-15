@@ -1159,7 +1159,8 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)   
 def handle_message(event):
-    
+#    os.system('cls')
+    print("I am here 0")
     '''
     print("Handle: reply_token: " + event.reply_token + ", message: " + event.message.text)
     content = "{},{},{}".format(event.message.text,event.message.text,event.message.text)
@@ -1168,7 +1169,7 @@ def handle_message(event):
         TextSendMessage(text=content))
     '''
     msg = event.message.text.lower()  # 将输入文本转换为小写，以便不区分大小写处理
-    print (msg)
+    print ("@@,Message:",msg)
     try:
         if msg == "病重即將去世，希望能離院回家度過最後時光":
             premsg="病危是個傷心的時刻，想完成回家的願望，可能遇到下列的問題："
@@ -1185,16 +1186,70 @@ def handle_message(event):
 
             pass
         else:
-            print ("I am here")
-            GPT_answer = askotherquestion(msg)  # 假设这里是处理其他消息的默认回应
-            print (GPT_answer)
-            print (GPT_answer[0]["confidenceScore"])
-            if GPT_answer[0]["confidenceScore"] >=0.8:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=GPT_answer[0]["answer"]))
+            print("I am here")
+            GPT_answer = askotherquestion(msg)[0]  # 假设这里是处理其他消息的默认回应,只取第一個問題。
+            print(GPT_answer["confidenceScore"])
+            print ("prompts:",len(GPT_answer["dialog"]["prompts"]),"answers:",len(GPT_answer["answer"]))
+            if GPT_answer["confidenceScore"] >= 0.3:
+                if len(GPT_answer["dialog"]["prompts"]) >0 and len(GPT_answer["answer"]) >0:
+                    print("checkpoint 1")
+                    promptlist = list()
+                    for i in GPT_answer["dialog"]["prompts"]:
+                        # 將 ["displayText"] 修改為 i["displayText"]
+                        promptlist.append(i["displayText"])
+                    print ("length:@@",len(promptlist))
+                    if len(promptlist) >= 3:
+                        promptlist=promptlist[0:3]
+
+                    msg1 = TextSendMessage(text=GPT_answer["answer"])
+                    msg2 = ButtonMsg(promptlist) 
+                    line_bot_api.reply_message(event.reply_token, [msg1,msg2])
+
+                elif len(GPT_answer["dialog"]["prompts"]) ==0 and len(GPT_answer["answer"]) >0:
+                    print("checkpoint 2")
+                    msg1 = TextSendMessage(text=GPT_answer["answer"])                    # 將下面這行改為使用 msg2
+                    line_bot_api.reply_message(event.reply_token, msg1)
+                elif len(GPT_answer["dialog"]["prompts"]) > 0 and len(GPT_answer["answer"]) ==0: 
+                    print("checkpoint 3")
+                    promptlist = list()
+                    for i in GPT_answer["dialog"]["prompts"]:
+                        # 將 ["displayText"] 修改為 i["displayText"]
+                        promptlist.append(i["displayText"])
+                    print ("length:@@",len(promptlist))
+                    if len(promptlist) >= 3:
+                        promptlist=promptlist[0:3]
+                    print ("length:@@@",len(promptlist))
+ 
+                    msg2 = ButtonMsg(promptlist)
+                    line_bot_api.reply_message(event.reply_token, msg2)                    
+                else:
+                    print("checkpoint 3")
+
+                    print("I am here ###", nothing)
+
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="無內容"))
     except Exception as e:
-        print("error:",e)  # 输出错误堆栈
+        print("error:", e)  # 输出错误堆栈
         error_message = '不好意思，有點小錯誤。'
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=error_message))
+
+from linebot.models import (
+    ButtonsTemplate, MessageAction, TemplateSendMessage
+)
+
+def ButtonMsg(promptlist):
+    actions = [MessageAction(label=prompt[0:10], text=prompt) for prompt in promptlist]    
+    buttons_template = ButtonsTemplate(
+        title='你可能還想進一步了解：',
+#        thumbnail_image_url='https://storage.googleapis.com/你的圖片連結.png',
+        text='可選擇以下操作',
+        actions=actions
+    )
+    return TemplateSendMessage(alt_text='進一步資訊', template=buttons_template)
+
+
+
+
 
 
 #Flex Message Area
