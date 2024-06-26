@@ -1247,7 +1247,7 @@ def handle_message(event):
 
                     print("I am here ###", "nothing")
 
-                    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="找不到你所需要的內容"))
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請參考主選單內容"))
 
     except Exception as e:
         print("error:", e)  # 输出错误堆栈
