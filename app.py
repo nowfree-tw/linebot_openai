@@ -1251,8 +1251,8 @@ def handle_message(event):
 
     except Exception as e:
         print("error:", e)  # 输出错误堆栈
-        error_message = '不好意思，有點小錯誤。'
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=error_message))
+        #error_message = '不好意思，有點小錯誤。'#######################################
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=error_message))######################################
 
 from linebot.models import (
     ButtonsTemplate, MessageAction, TemplateSendMessage
